@@ -16,18 +16,26 @@
 | **正交圆周** | 对 \(x(t)\)、\(y(t)\) 分别做傅里叶级数 | 左侧 X 本轮 + 顶侧 Y 本轮，虚线交于笔尖 |
 | **复平面本轮** | 对 \(z(t)\) 一次复数 DFT | 一条本轮链在平面内叠加 |
 
+## 在线演示
+
+https://sogrey.github.io/Fourier-Round-Drawing-Method/
+
+推送到 `main` 后，GitHub Actions 会自动构建并部署到 GitHub Pages。仓库需开启：
+
+**Settings → Pages → Build and deployment → Source: GitHub Actions**
+
 ## 快速开始
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
-浏览器访问终端提示的地址（默认 http://127.0.0.1:8765/ ）。
+浏览器访问终端提示的地址（默认带 base：http://localhost:8765/Fourier-Round-Drawing-Method/ ）。
 
 ```bash
-npm run build    # 生产构建
-npm run preview  # 预览构建结果
+pnpm run build    # 生产构建
+pnpm run preview  # 预览构建结果
 ```
 
 ## 操作说明
