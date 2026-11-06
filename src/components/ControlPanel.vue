@@ -60,16 +60,5 @@ defineProps({
       </button>
       <button type="button" @click="demo.resetTrail()">重置轨迹</button>
     </div>
-
-    <div class="explain">
-      <h2>流程</h2>
-      <ol>
-        <li>在平面采样闭合路径 → 散点 \((x_n, y_n)\)</li>
-        <li>视作周期复值函数 \(z(t)=x(t)+iy(t)\)</li>
-        <li>对 \(x\)、\(y\)（或 \(z\)）做 DFT 得系数 \(C_k\)</li>
-        <li>\(|C_k|\) → 半径，\(\arg(C_k)\) → 初相</li>
-        <li>复数（向量）叠加 → 笔尖轨迹还原图形</li>
-      </ol>
-    </div>
   </aside>
 </template>

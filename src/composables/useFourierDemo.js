@@ -77,7 +77,7 @@ function buildPartModel(part, terms) {
 }
 
 export function useFourierDemo(canvasRef) {
-  const mode = ref("orthogonal");
+  const mode = ref("complex");
   const shape = ref("china");
   const terms = ref(64);
   const samples = ref(512);

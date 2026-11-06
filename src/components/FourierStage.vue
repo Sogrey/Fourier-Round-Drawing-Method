@@ -1,4 +1,6 @@
 <script setup>
+import KatexFormula from "./KatexFormula.vue";
+
 defineProps({
   demo: {
     type: Object,
@@ -28,8 +30,9 @@ function setCanvas(el) {
         v-for="(line, idx) in demo.formula.lines"
         :key="idx"
         :class="line.cls"
-        v-html="line.html"
-      />
+      >
+        <KatexFormula :tex="line.tex" />
+      </div>
     </div>
 
     <canvas :ref="setCanvas" width="1100" height="720" />

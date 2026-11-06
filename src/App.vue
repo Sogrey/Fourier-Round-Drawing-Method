@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import ControlPanel from "./components/ControlPanel.vue";
 import FourierStage from "./components/FourierStage.vue";
+import ModeCompare from "./components/ModeCompare.vue";
 import { useFourierDemo } from "./composables/useFourierDemo.js";
 
 const canvasRef = ref(null);
@@ -19,18 +20,16 @@ function onCanvas(el) {
         <span class="brand-mark">ℱ</span>
         <div>
           <h1>傅里叶本轮绘图法</h1>
-          <p>正交圆周 · 实部 / 虚部分开做傅里叶级数</p>
+          <p>
+            {{
+              demo.mode === "orthogonal"
+                ? "正交圆周 · X / Y 分开做级数再投影合成"
+                : "复平面本轮 · 一条复数本轮链直接叠加"
+            }}
+          </p>
         </div>
       </div>
       <div class="mode-toggle" role="tablist">
-        <button
-          type="button"
-          class="mode-btn"
-          :class="{ active: demo.mode === 'orthogonal' }"
-          @click="demo.mode = 'orthogonal'"
-        >
-          正交圆周
-        </button>
         <button
           type="button"
           class="mode-btn"
@@ -39,6 +38,14 @@ function onCanvas(el) {
         >
           复平面本轮
         </button>
+        <button
+          type="button"
+          class="mode-btn"
+          :class="{ active: demo.mode === 'orthogonal' }"
+          @click="demo.mode = 'orthogonal'"
+        >
+          正交圆周
+        </button>
       </div>
     </header>
 
@@ -46,5 +53,7 @@ function onCanvas(el) {
       <FourierStage :demo="demo" @canvas="onCanvas" />
       <ControlPanel :demo="demo" />
     </main>
+
+    <ModeCompare :demo="demo" />
   </div>
 </template>

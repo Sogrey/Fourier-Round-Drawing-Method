@@ -24,14 +24,16 @@ export function layoutFor(mode, width, height, options = {}) {
         compact: true,
       };
     }
+    // 桌面：图形居中放大，本轮链单独缩小
+    const s = Math.min(width, height);
     return {
-      originX: width * 0.62,
-      originY: height * 0.66,
-      scale: Math.min(width, height) * 0.2,
-      chainScale: Math.min(width, height) * 0.2,
-      xAnchor: { x: width * 0.14, y: height * 0.66 },
-      yAnchor: { x: width * 0.62, y: height * 0.16 },
-      boxPad: 1.15,
+      originX: width * 0.52,
+      originY: height * 0.56,
+      scale: s * 0.36,
+      chainScale: s * 0.14,
+      xAnchor: { x: width * 0.1, y: height * 0.56 },
+      yAnchor: { x: width * 0.52, y: height * 0.1 },
+      boxPad: 1.08,
       compact: false,
     };
   }
@@ -48,12 +50,13 @@ export function layoutFor(mode, width, height, options = {}) {
     };
   }
 
+  const s = Math.min(width, height);
   return {
     originX: width * 0.5,
-    originY: height * 0.55,
-    scale: Math.min(width, height) * 0.28,
-    chainScale: Math.min(width, height) * 0.28,
-    boxPad: 1.15,
+    originY: height * 0.52,
+    scale: s * 0.38,
+    chainScale: s * 0.38,
+    boxPad: 1.08,
     compact: false,
   };
 }
