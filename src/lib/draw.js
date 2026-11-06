@@ -5,22 +5,56 @@ export function worldToScreen(x, y, layout) {
   };
 }
 
-export function layoutFor(mode, width, height) {
+export function layoutFor(mode, width, height, options = {}) {
+  const compact =
+    options.compact ?? (width / Math.max(height, 1) < 1.15 || width < 900);
+
   if (mode === "orthogonal") {
+    if (compact) {
+      // 窄屏：图形居中放大，本轮链缩小以免占版面
+      const s = Math.min(width, height);
+      return {
+        originX: width * 0.5,
+        originY: height * 0.55,
+        scale: s * 0.4,
+        chainScale: s * 0.16,
+        xAnchor: { x: width * 0.08, y: height * 0.55 },
+        yAnchor: { x: width * 0.5, y: height * 0.08 },
+        boxPad: 1.05,
+        compact: true,
+      };
+    }
     return {
       originX: width * 0.62,
       originY: height * 0.66,
       scale: Math.min(width, height) * 0.2,
+      chainScale: Math.min(width, height) * 0.2,
       xAnchor: { x: width * 0.14, y: height * 0.66 },
       yAnchor: { x: width * 0.62, y: height * 0.16 },
       boxPad: 1.15,
+      compact: false,
     };
   }
+
+  if (compact) {
+    const s = Math.min(width, height);
+    return {
+      originX: width * 0.5,
+      originY: height * 0.52,
+      scale: s * 0.4,
+      chainScale: s * 0.4,
+      boxPad: 1.05,
+      compact: true,
+    };
+  }
+
   return {
     originX: width * 0.5,
     originY: height * 0.55,
     scale: Math.min(width, height) * 0.28,
+    chainScale: Math.min(width, height) * 0.28,
     boxPad: 1.15,
+    compact: false,
   };
 }
 
@@ -85,7 +119,10 @@ export function drawFrame(ctx, canvas, state) {
   const part = parts[activeIndex] || parts[0];
   if (!part) return null;
 
-  const layout = layoutFor(mode, canvas.width, canvas.height);
+  const layout = layoutFor(mode, canvas.width, canvas.height, {
+    compact: state.compact,
+  });
+  const chainScale = layout.chainScale ?? layout.scale;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   for (const p of parts) {
@@ -121,15 +158,15 @@ export function drawFrame(ctx, canvas, state) {
     const xTipTarget = { x: tip.x, y: layout.xAnchor.y };
     const xMathTip = ev.xChain[ev.xChain.length - 1];
     const xChainAnchored = ev.xChain.map((p) => ({
-      x: xTipTarget.x + (p.x - xMathTip.x) * layout.scale,
-      y: xTipTarget.y - (p.y - xMathTip.y) * layout.scale,
+      x: xTipTarget.x + (p.x - xMathTip.x) * chainScale,
+      y: xTipTarget.y - (p.y - xMathTip.y) * chainScale,
     }));
 
     const yTipTarget = { x: layout.yAnchor.x, y: tip.y };
     const yMathTip = ev.yChain[ev.yChain.length - 1];
     const yChainAnchored = ev.yChain.map((p) => ({
-      x: yTipTarget.x + (p.x - yMathTip.x) * layout.scale,
-      y: yTipTarget.y - (p.y - yMathTip.y) * layout.scale,
+      x: yTipTarget.x + (p.x - yMathTip.x) * chainScale,
+      y: yTipTarget.y - (p.y - yMathTip.y) * chainScale,
     }));
 
     drawEpicycles(ctx, xChainAnchored, "rgba(94,196,168,0.85)");

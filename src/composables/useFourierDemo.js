@@ -170,9 +170,24 @@ export function useFourierDemo(canvasRef) {
     }
   }
 
+  function syncCanvasSize(canvas) {
+    const rect = canvas.getBoundingClientRect();
+    const cssW = Math.max(1, Math.round(rect.width));
+    const cssH = Math.max(1, Math.round(rect.height || cssW * 0.85));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.round(cssW * dpr));
+    const h = Math.max(1, Math.round(cssH * dpr));
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w;
+      canvas.height = h;
+    }
+    return { compact: cssW < 720 };
+  }
+
   function paint() {
     const canvas = canvasRef.value;
     if (!canvas) return;
+    const { compact } = syncCanvasSize(canvas);
     const ctx = canvas.getContext("2d");
     const tipMath = drawFrame(ctx, canvas, {
       mode: mode.value,
@@ -180,6 +195,7 @@ export function useFourierDemo(canvasRef) {
       activeIndex: activeIndex.value,
       localT: localT.value,
       terms: terms.value,
+      compact,
       _eval: { evalOrthogonal, evalComplex },
     });
     if (!tipMath) return;

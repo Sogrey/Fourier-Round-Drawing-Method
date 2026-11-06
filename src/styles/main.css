@@ -296,12 +296,65 @@ body {
 }
 
 @media (max-width: 960px) {
+  .app {
+    padding: 14px 12px 24px;
+  }
+
   .main {
     grid-template-columns: 1fr;
   }
 
+  .brand h1 {
+    font-size: 1.15rem;
+  }
+
+  .brand p {
+    font-size: 0.8rem;
+  }
+
+  /* 窄屏：公式改为流式排在画布上方，避免遮挡图形 */
+  .stage-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
   .formula {
-    font-size: 11px;
+    position: static;
+    z-index: auto;
+    top: auto;
+    left: auto;
+    right: auto;
     max-width: none;
+    margin: 10px 10px 0;
+    font-size: 11px;
+    max-height: none;
+    overflow: visible;
+    pointer-events: auto;
+    flex-shrink: 0;
+  }
+
+  /* 默认只留笔尖与通项，展开项放到「显示完整公式」 */
+  .formula:not(.is-full) .series {
+    display: none;
+  }
+
+  .formula.is-full {
+    max-height: 36vh;
+    overflow: auto;
+  }
+
+  .stage-wrap canvas {
+    flex: 0 0 auto;
+    width: 100%;
+    /* 覆盖 intrinsic 比例，给图形更大可视区域 */
+    aspect-ratio: 1 / 1.05;
+    height: auto;
+    min-height: 300px;
+  }
+
+  .stage-meta {
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    padding: 10px 12px 12px;
   }
 }
